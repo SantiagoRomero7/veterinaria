@@ -127,7 +127,7 @@ function registrarDueño() {
         case "4": buscarMascota(); break;
         case "5": actualizarEstadoSalud(); break;
         case "6": eliminarMascota(); break;
-        case "7": listarMascotas(); break;
+        case "7": verMascotasDeDueño(); break;
         case "8": alert("¡Hasta pronto!"); break;
         default: alert("Opción inválida.");
       }
@@ -211,5 +211,33 @@ function registrarDueño() {
     } else {
       alert("Eliminación cancelada.");
       }
+  }
+  
+
+  function verMascotasDeDueño() {
+    const cedula = prompt("Ingrese la cédula del dueño:");
+    if (!cedula) {
+      alert("Debe ingresar una cédula.");
+      return;
+    }
+  
+    const dueño = dueños.find(d => d.cedula === cedula);
+    if (!dueño) {
+      alert("Dueño no encontrado.");
+      return;
+    }
+  
+    const mascotasDueño = mascotas.filter(m => m.idDueño === dueño.id);
+    if (mascotasDueño.length === 0) {
+      alert("Este dueño no tiene mascotas registradas.");
+      return;
+    }
+  
+    console.log(` Mascotas del dueño ${dueño.nombre}:`);
+    mascotasDueño.forEach(m => {
+      console.log(`- ${m.nombre} (${m.especie}, ${m.edad} años, ${m.estado})`);
+    });
+  
+    alert(`Se encontraron ${mascotasDueño.length} mascota(s). Mira la consola.`);
   }
   
