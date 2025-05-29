@@ -30,19 +30,39 @@ function registrarDueño() {
   function registrarMascota() {
     const cedulaDueño = prompt("Ingrese la cédula del dueño:");
     const dueño = dueños.find(d => d.cedula === cedulaDueño);
+    
     if (!dueño) {
-      alert("Dueño no encontrado.");
+      alert("❌ Dueño no encontrado. Registre el dueño primero.");
       return;
     }
   
     const nombre = prompt("Nombre de la mascota:");
     const especie = prompt("Especie (Perro, Gato, Ave, Reptil, Otro):");
-    const edad = parseFloat(prompt("Edad (años):"));
-    const peso = parseFloat(prompt("Peso (kg):"));
+    const edadStr = prompt("Edad (en años):");
+    const pesoStr = prompt("Peso (en kg):");
     const estado = prompt("Estado de salud (Sano, Enfermo, En tratamiento):");
   
-    if (!nombre || !especie || isNaN(edad) || edad <= 0 || isNaN(peso) || peso <= 0 || !["Sano", "Enfermo", "En tratamiento"].includes(estado)) {
-      alert("Datos inválidos.");
+    if (!nombre || !especie || !edadStr || !pesoStr || !estado) {
+      alert("❌ Todos los campos son obligatorios.");
+      return;
+    }
+  
+    const edad = parseFloat(edadStr);
+    const peso = parseFloat(pesoStr);
+  
+    if (isNaN(edad) || edad <= 0) {
+      alert("❌ La edad debe ser un número positivo.");
+      return;
+    }
+  
+    if (isNaN(peso) || peso <= 0) {
+      alert("❌ El peso debe ser un número positivo.");
+      return;
+    }
+  
+    const estadosPermitidos = ["Sano", "Enfermo", "En tratamiento"];
+    if (!estadosPermitidos.includes(estado)) {
+      alert(`❌ Estado de salud inválido. Debe ser uno de: ${estadosPermitidos.join(", ")}`);
       return;
     }
   
@@ -56,8 +76,9 @@ function registrarDueño() {
       idDueño: dueño.id
     });
   
-    alert("Mascota registrada con éxito.");
+    alert("✅ Mascota registrada con éxito.");
   }
+  
 
 
   function listarMascotas() {
@@ -96,5 +117,4 @@ function registrarDueño() {
   }
   
   menu();
-  
   
