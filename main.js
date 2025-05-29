@@ -126,7 +126,7 @@ function registrarDueño() {
         case "3": listarMascotas(); break;
         case "4": buscarMascota(); break;
         case "5": actualizarEstadoSalud(); break;
-        case "6": listarMascotas(); break;
+        case "6": eliminarMascota(); break;
         case "7": listarMascotas(); break;
         case "8": alert("¡Hasta pronto!"); break;
         default: alert("Opción inválida.");
@@ -191,4 +191,25 @@ function registrarDueño() {
     alert(`Estado de salud actualizado a ${nuevoEstado} para ${mascota.nombre}.`);
   }
   
+  function eliminarMascota(){
+    const nombre = prompt("Ingrese el nombre de la mascota a eliminar:");
+    if (!nombre) {
+      alert("Debe ingresar un nombre.");
+      return;
+  }
+
+  const index = mascotas.findIndex(m => m.nombre.toLowerCase() === nombre.toLowerCase());
+  if (index === -1) {
+    alert("Mascota no encontrada.");
+    return;
+  }
+
+  const confirmacion = confirm(' ¿ Seguro de eliminar esta mascota ?');
+  if (confirmacion) {
+    mascotas.splice(index, 1);
+    alert("Mascota eliminada con èxito.");
+    } else {
+      alert("Eliminación cancelada.");
+      }
+  }
   
