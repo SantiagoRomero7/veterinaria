@@ -16,29 +16,28 @@ const buscarDueñoPorCedula = (cedula) => dueños.find((d) => d.cedula === cedul
 const buscarMascotaPorNombre = (nombre) =>
   mascotas.find((m) => m.nombre.toLowerCase() === nombre.toLowerCase());
 
-// Menú principal
-
+// MENÚ PRINCIPAL
 async function menu() {
   let opcion;
   do {
     opcion = prompt(`
-  Gestión Veterinaria:
-  1. Registrar dueño
-  2. Registrar mascota
-  3. Listar mascotas
-  4. Buscar mascota
-  5. Actualizar estado de salud
-  6. Eliminar mascota
-  7. Ver mascotas de un dueño
-  8. Salir
-  `);
+Gestión Veterinaria:
+1. Registrar dueño
+2. Registrar mascota
+3. Listar mascotas
+4. Buscar mascota
+5. Actualizar estado de salud
+6. Eliminar mascota
+7. Ver mascotas de un dueño
+8. Salir
+`);
 
     switch (opcion) {
       case "1":
-        registrarDueño(() => alert("Dueño registrado con éxito."));
+        await registrarDueño();
         break;
       case "2":
-        registrarMascota(() => alert("Mascota registrada con éxito."));
+        await registrarMascota();
         break;
       case "3":
         await listarMascotas();
@@ -64,80 +63,88 @@ async function menu() {
   } while (opcion !== "8");
 }
 
-menu();
+// REGISTRAR DUEÑO
+function registrarDueño() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const nombre = prompt("Nombre del dueño:");
+      const cedula = prompt("Cédula:");
+      const telefono = prompt("Teléfono:");
+      const correo = prompt("Correo:");
 
-// REGISTRO DE DUEÑO 
+      if (!nombre || !cedula || !telefono || !correo) {
+        alert("Todos los campos son obligatorios.");
+        return resolve();
+      }
 
-function registrarDueño(callback) {
-  setTimeout(() => {
-    const nombre = prompt("Nombre del dueño:");
-    const cedula = prompt("Cédula:");
-    const telefono = prompt("Teléfono:");
-    const correo = prompt("Correo:");
+      // Evitar cédulas duplicadas
+      if (buscarDueñoPorCedula(cedula)) {
+        alert("Ya existe un dueño registrado con esa cédula.");
+        return resolve();
+      }
 
-    if (!nombre || !cedula || !telefono || !correo) {
-      alert("Todos los campos son obligatorios.");
-      return;
-    }
-
-    dueños.push({ id: idDueño++, nombre, cedula, telefono, correo });
-    callback();
-  }, 1500);
+      dueños.push({ id: idDueño++, nombre, cedula, telefono, correo });
+      alert("Dueño registrado exitosamente.");
+      resolve();
+    }, 1500);
+  });
 }
 
-// REGISTRO DE MASCOTA 
+// REGISTRAR MASCOTA
+function registrarMascota() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const cedulaDueño = prompt("Cédula del dueño:");
+      const dueño = buscarDueñoPorCedula(cedulaDueño);
 
-function registrarMascota(callback) {
-  setTimeout(() => {
-    const cedulaDueño = prompt("Cédula del dueño:");
-    const dueño = buscarDueñoPorCedula(cedulaDueño);
+      if (!dueño) {
+        alert("Dueño no encontrado. Registre el dueño primero.");
+        return resolve();
+      }
 
-    if (!dueño) {
-      alert("Dueño no encontrado. Registre el dueño primero.");
-      return;
-    }
+      const nombre = prompt("Nombre de la mascota:");
+      const especie = prompt("Especie:");
+      const edadStr = prompt("Edad:");
+      const pesoStr = prompt("Peso:");
+      const estado = prompt("Estado de salud (Sano, Enfermo, En tratamiento):");
 
-    const nombre = prompt("Nombre de la mascota:");
-    const especie = prompt("Especie:");
-    const edadStr = prompt("Edad:");
-    const pesoStr = prompt("Peso:");
-    const estado = prompt("Estado de salud (Sano, Enfermo, En tratamiento):");
+      if (!nombre || !especie || !edadStr || !pesoStr || !estado) {
+        alert("Todos los campos son obligatorios.");
+        return resolve();
+      }
 
-    if (!nombre || !especie || !edadStr || !pesoStr || !estado) {
-      alert("Todos los campos son obligatorios.");
-      return;
-    }
+      const edad = parseFloat(edadStr);
+      const peso = parseFloat(pesoStr);
 
-    const edad = parseFloat(edadStr);
-    const peso = parseFloat(pesoStr);
+      if (isNaN(edad) || edad <= 0) {
+        alert("Edad inválida.");
+        return resolve();
+      }
 
-    if (isNaN(edad) || edad <= 0) {
-      alert("Edad inválida.");
-      return;
-    }
+      if (isNaN(peso) || peso <= 0) {
+        alert("Peso inválido.");
+        return resolve();
+      }
 
-    if (isNaN(peso) || peso <= 0) {
-      alert("Peso inválido.");
-      return;
-    }
+      if (!validarEstadoSalud(estado)) {
+        alert("Estado inválido.");
+        return resolve();
+      }
 
-    if (!validarEstadoSalud(estado)) {
-      alert("Estado inválido.");
-      return;
-    }
+      mascotas.push({
+        id: idMascota++,
+        nombre,
+        especie,
+        edad,
+        peso,
+        estado,
+        idDueño: dueño.id,
+      });
 
-    mascotas.push({
-      id: idMascota++,
-      nombre,
-      especie,
-      edad,
-      peso,
-      estado,
-      idDueño: dueño.id,
-    });
-
-    callback();
-  }, 2000);
+      alert("Mascota registrada exitosamente.");
+      resolve();
+    }, 2000);
+  });
 }
 
 // LISTAR MASCOTAS
@@ -165,7 +172,7 @@ async function listarMascotas() {
   alert("Mira la consola para ver la lista.");
 }
 
-// BUSCAR MASCOTA (con promesa y retardo)
+// BUSCAR MASCOTA
 function buscarMascota() {
   return new Promise((resolve) => {
     const nombre = prompt("Nombre de la mascota a buscar:");
@@ -191,8 +198,7 @@ function buscarMascota() {
   });
 }
 
-// ACTUALIZAR ESTADO DE SALUD 
-
+// ACTUALIZAR ESTADO DE SALUD
 async function actualizarEstadoSalud() {
   const nombre = prompt("Nombre de la mascota a actualizar:");
   if (!nombre) return alert("Debes ingresar un nombre.");
@@ -211,12 +217,14 @@ async function actualizarEstadoSalud() {
   alert(`Estado actualizado a ${nuevoEstado} para ${mascota.nombre}.`);
 }
 
-// ELIMINAR MASCOTA 
-
+// ELIMINAR MASCOTA
 function eliminarMascota() {
   return new Promise((resolve) => {
     const nombre = prompt("Nombre de la mascota a eliminar:");
-    if (!nombre) return alert("Debes ingresar un nombre.");
+    if (!nombre) {
+      alert("Debes ingresar un nombre.");
+      return resolve();
+    }
 
     setTimeout(() => {
       const index = mascotas.findIndex(
@@ -240,8 +248,7 @@ function eliminarMascota() {
   });
 }
 
-// VER MASCOTAS DE UN DUEÑO 
-
+// VER MASCOTAS DE UN DUEÑO
 async function verMascotasDeDueño() {
   const cedula = prompt("Cédula del dueño:");
   if (!cedula) return alert("Debes ingresar una cédula.");
@@ -262,3 +269,5 @@ async function verMascotasDeDueño() {
   );
   alert(`Se encontraron ${mascotasDueño.length} mascota(s). Mira la consola.`);
 }
+
+menu();
