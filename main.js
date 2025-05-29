@@ -93,7 +93,8 @@ function registrarDueño() {
       const dueño = dueños.find(d => d.id === m.idDueño);
       const nombreDueño = dueño ? dueño.nombre : "Dueño desconocido";
   
-      console.log(`🐾 Mascota ID: ${m.id}`);
+      console.log("───────────────────────────────");
+      console.log(`   Mascota ID: ${m.id}`);
       console.log(`   Nombre: ${m.nombre}`);
       console.log(`   Especie: ${m.especie}`);
       console.log(`   Edad: ${m.edad} años`);
@@ -123,6 +124,10 @@ function registrarDueño() {
         case "1": registrarDueño(); break;
         case "2": registrarMascota(); break;
         case "3": listarMascotas(); break;
+        case "4": buscarMascota(); break;
+        case "5": listarMascotas(); break;
+        case "6": listarMascotas(); break;
+        case "7": listarMascotas(); break;
         case "8": alert("¡Hasta pronto!"); break;
         default: alert("Opción inválida.");
       }
@@ -130,4 +135,38 @@ function registrarDueño() {
   }
   
   menu();
+
+  function buscarMascota() {
+    const nombreBuscado = prompt("Ingrese el nombre de la mascota a buscar:");
+    if (!nombreBuscado) {
+      alert("Debe ingresar un nombre.");
+      return;
+    }
+  
+    // Usamos find para buscar la primera coincidencia exacta (ignorando mayúsculas)
+    const mascota = mascotas.find(m => m.nombre.toLowerCase() === nombreBuscado.toLowerCase());
+  
+    if (!mascota) {
+      alert("Mascota no encontrada.");
+      return;
+    }
+  
+    const dueño = dueños.find(d => d.id === mascota.idDueño);
+    const nombreDueño = dueño ? dueño.nombre : "Dueño desconocido";
+  
+    let info = `
+  🐾 Mascota encontrada:
+  Nombre: ${mascota.nombre}
+  Especie: ${mascota.especie}
+  Edad: ${mascota.edad} años
+  Peso: ${mascota.peso} kg
+  Estado de salud: ${mascota.estado}
+  Dueño: ${nombreDueño}
+  `;
+  
+    console.log(info);
+    alert(`Mascota "${mascota.nombre}" encontrada. Mira la consola para más detalles.`);
+  }
+  
+  
   
