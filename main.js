@@ -32,7 +32,7 @@ function registrarDueño() {
     const dueño = dueños.find(d => d.cedula === cedulaDueño);
     
     if (!dueño) {
-      alert("❌ Dueño no encontrado. Registre el dueño primero.");
+      alert(" Dueño no encontrado. Registre el dueño primero.");
       return;
     }
   
@@ -43,7 +43,7 @@ function registrarDueño() {
     const estado = prompt("Estado de salud (Sano, Enfermo, En tratamiento):");
   
     if (!nombre || !especie || !edadStr || !pesoStr || !estado) {
-      alert("❌ Todos los campos son obligatorios.");
+      alert(" Todos los campos son obligatorios.");
       return;
     }
   
@@ -51,18 +51,18 @@ function registrarDueño() {
     const peso = parseFloat(pesoStr);
   
     if (isNaN(edad) || edad <= 0) {
-      alert("❌ La edad debe ser un número positivo.");
+      alert(" La edad debe ser un número positivo.");
       return;
     }
   
     if (isNaN(peso) || peso <= 0) {
-      alert("❌ El peso debe ser un número positivo.");
+      alert(" El peso debe ser un número positivo.");
       return;
     }
   
     const estadosPermitidos = ["Sano", "Enfermo", "En tratamiento"];
     if (!estadosPermitidos.includes(estado)) {
-      alert(`❌ Estado de salud inválido. Debe ser uno de: ${estadosPermitidos.join(", ")}`);
+      alert(` Estado de salud inválido. Debe ser uno de: ${estadosPermitidos.join(", ")}`);
       return;
     }
   
@@ -76,18 +76,31 @@ function registrarDueño() {
       idDueño: dueño.id
     });
   
-    alert("✅ Mascota registrada con éxito.");
+    alert("Mascota registrada con éxito.");
   }
   
 
 
   function listarMascotas() {
     if (mascotas.length === 0) {
-      alert("No hay mascotas registradas.");
+      alert(" No hay mascotas registradas.");
       return;
     }
+  
+    console.log(" Lista de mascotas registradas:\n");
+  
     mascotas.forEach(m => {
-      console.log(` ${m.nombre} - ${m.especie} - Edad: ${m.edad} años - Estado: ${m.estado}`);
+      const dueño = dueños.find(d => d.id === m.idDueño);
+      const nombreDueño = dueño ? dueño.nombre : "Dueño desconocido";
+  
+      console.log(`🐾 Mascota ID: ${m.id}`);
+      console.log(`   Nombre: ${m.nombre}`);
+      console.log(`   Especie: ${m.especie}`);
+      console.log(`   Edad: ${m.edad} años`);
+      console.log(`   Peso: ${m.peso} kg`);
+      console.log(`   Estado de salud: ${m.estado}`);
+      console.log(`   Dueño: ${nombreDueño}`);
+      console.log("───────────────────────────────");
     });
   }
   
