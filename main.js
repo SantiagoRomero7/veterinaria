@@ -66,8 +66,35 @@ function registrarDueño() {
       return;
     }
     mascotas.forEach(m => {
-      console.log(`🐾 ${m.nombre} - ${m.especie} - Edad: ${m.edad} años - Estado: ${m.estado}`);
+      console.log(` ${m.nombre} - ${m.especie} - Edad: ${m.edad} años - Estado: ${m.estado}`);
     });
   }
+  
+  function menu() {
+    let opcion;
+    do {
+      opcion = prompt(`
+     Gestión Veterinaria:
+      1. Registrar dueño
+      2. Registrar mascota
+      3. Listar mascotas
+      4. Buscar mascota
+      5. Actualizar estado de salud
+      6. Eliminar mascota
+      7. Ver mascotas de un dueño
+      8. Salir
+      `);
+  
+      switch (opcion) {
+        case "1": registrarDueño(); break;
+        case "2": registrarMascota(); break;
+        case "3": listarMascotas(); break;
+        case "8": alert("¡Hasta pronto!"); break;
+        default: alert("Opción inválida.");
+      }
+    } while (opcion !== "8");
+  }
+  
+  menu();
   
   
