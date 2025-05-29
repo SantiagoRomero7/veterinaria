@@ -16,7 +16,7 @@ const buscarDueñoPorCedula = (cedula) => dueños.find((d) => d.cedula === cedul
 const buscarMascotaPorNombre = (nombre) =>
   mascotas.find((m) => m.nombre.toLowerCase() === nombre.toLowerCase());
 
-// MENÚ PRINCIPAL
+
 async function menu() {
   let opcion;
   do {
@@ -63,7 +63,7 @@ Gestión Veterinaria:
   } while (opcion !== "8");
 }
 
-// REGISTRAR DUEÑO
+
 function registrarDueño() {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -77,7 +77,7 @@ function registrarDueño() {
         return resolve();
       }
 
-      // Evitar cédulas duplicadas
+      
       if (buscarDueñoPorCedula(cedula)) {
         alert("Ya existe un dueño registrado con esa cédula.");
         return resolve();
@@ -90,7 +90,7 @@ function registrarDueño() {
   });
 }
 
-// REGISTRAR MASCOTA
+
 function registrarMascota() {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -147,7 +147,7 @@ function registrarMascota() {
   });
 }
 
-// LISTAR MASCOTAS
+
 async function listarMascotas() {
   if (mascotas.length === 0) {
     alert("No hay mascotas registradas.");
@@ -172,7 +172,7 @@ async function listarMascotas() {
   alert("Mira la consola para ver la lista.");
 }
 
-// BUSCAR MASCOTA
+
 function buscarMascota() {
   return new Promise((resolve) => {
     const nombre = prompt("Nombre de la mascota a buscar:");
@@ -198,7 +198,7 @@ function buscarMascota() {
   });
 }
 
-// ACTUALIZAR ESTADO DE SALUD
+
 async function actualizarEstadoSalud() {
   const nombre = prompt("Nombre de la mascota a actualizar:");
   if (!nombre) return alert("Debes ingresar un nombre.");
@@ -217,7 +217,7 @@ async function actualizarEstadoSalud() {
   alert(`Estado actualizado a ${nuevoEstado} para ${mascota.nombre}.`);
 }
 
-// ELIMINAR MASCOTA
+
 function eliminarMascota() {
   return new Promise((resolve) => {
     const nombre = prompt("Nombre de la mascota a eliminar:");
@@ -248,7 +248,7 @@ function eliminarMascota() {
   });
 }
 
-// VER MASCOTAS DE UN DUEÑO
+
 async function verMascotasDeDueño() {
   const cedula = prompt("Cédula del dueño:");
   if (!cedula) return alert("Debes ingresar una cédula.");
