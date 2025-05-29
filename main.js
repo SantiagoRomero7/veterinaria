@@ -125,7 +125,7 @@ function registrarDueño() {
         case "2": registrarMascota(); break;
         case "3": listarMascotas(); break;
         case "4": buscarMascota(); break;
-        case "5": listarMascotas(); break;
+        case "5": actualizarEstadoSalud(); break;
         case "6": listarMascotas(); break;
         case "7": listarMascotas(); break;
         case "8": alert("¡Hasta pronto!"); break;
@@ -143,7 +143,6 @@ function registrarDueño() {
       return;
     }
   
-    // Usamos find para buscar la primera coincidencia exacta (ignorando mayúsculas)
     const mascota = mascotas.find(m => m.nombre.toLowerCase() === nombreBuscado.toLowerCase());
   
     if (!mascota) {
@@ -155,7 +154,7 @@ function registrarDueño() {
     const nombreDueño = dueño ? dueño.nombre : "Dueño desconocido";
   
     let info = `
-  🐾 Mascota encontrada:
+  Mascota encontrada:
   Nombre: ${mascota.nombre}
   Especie: ${mascota.especie}
   Edad: ${mascota.edad} años
@@ -168,5 +167,28 @@ function registrarDueño() {
     alert(`Mascota "${mascota.nombre}" encontrada. Mira la consola para más detalles.`);
   }
   
+  function actualizarEstadoSalud() {
+    const nombre = prompt("Ingrese el nombre de la mascota a actualizar:");
+    if (!nombre) {
+      alert("Debe ingresar un nombre.");
+      return;
+    }
+  
+    const mascota = mascotas.find(m => m.nombre.toLowerCase() === nombre.toLowerCase());
+    if (!mascota) {
+      alert("Mascota no encontrada.");
+      return;
+    }
+  
+    const nuevoEstado = prompt("Nuevo estado de salud (Sano, Enfermo, En tratamiento):");
+    const estadosPermitidos = ["Sano", "Enfermo", "En tratamiento"];
+    if (!estadosPermitidos.includes(nuevoEstado)) {
+      alert("Estado inválido. Debe ser: Sano, Enfermo o En tratamiento.");
+      return;
+    }
+  
+    mascota.estado = nuevoEstado;
+    alert(`Estado de salud actualizado a ${nuevoEstado} para ${mascota.nombre}.`);
+  }
   
   
